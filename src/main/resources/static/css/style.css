@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+#wrap{
+	width: 1200px;
+	margin:auto;
+	background-color:dddddf;
+}
+
+header{
+	height: 50px;
+}
+
+.logo{
+	width:370px;
+}
+
+
+.join_part{
+	width: 200px;
+}
+
+
+.login_part{
+	height:80px;
+}
