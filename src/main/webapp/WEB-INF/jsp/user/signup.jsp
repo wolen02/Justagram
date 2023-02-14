@@ -24,11 +24,13 @@
 				<div class="border rounded shadow-lg">
 					<div class="d-flex justify-content-center logo">
 						<h1>JuStargram</h1>
-						<img width="100px" href="/static/img/instagramIcon.png" alt="사진">
 					</div>
 					<div class="d-flex align-items-center justify-content-center">
 						<div>
-							<input type="text" placeholder="아이디" id="inputLoginId" class="form-control mt-2">
+							<div class="d-flex mt-2">
+								<input type="text" placeholder="아이디" id="inputLoginId" class="form-control">
+								<button type="button" id="duplicationBtn" class="btn btn-primary ml-2">중복확인</button>
+							</div>
 							<input type="password" placeholder="비밀번호" id="inputPassword"  class="form-control mt-2">
 							<input type="password" placeholder="비밀번호 확인" id="inputConfirmPassword"  class="form-control mt-2">
 							<input type="text" placeholder="이름" id="inputName"  class="form-control mt-2">
@@ -54,6 +56,47 @@
 	
 	<script>
 		$(document).ready(function(){
+			
+			//중복확인
+			
+			var isDuplicateCheck = false;
+			
+			$("#duplicationBtn").on("click", function(){
+				let id = $("#inputLoginId").val();
+				
+				if(id == ""){
+					alert("아이디를 입력해주세요");
+					return;
+				}
+				
+				$.ajax({
+					type:"get"
+					,url:"/user/duplicate_id"
+					,data:{"loginId":id}
+					,success:function(data){
+						
+						if(data.isDuplicate){
+							alert("다른아이디를 사용해주세요.");
+						}else{
+							alert("사용가능합니다.");
+							isDuplicateCheck = true;
+						}						
+					}
+					,error:function(){
+						alert("에러!");
+					}
+				})
+				
+				
+			});
+			
+			
+			
+			
+			
+			
+			
+			// 회원가입
 			$("#joinBtn").on("click", function(){
 				let id = $("#inputLoginId").val();
 				let password = $("#inputPassword").val();
@@ -86,6 +129,12 @@
 					alert("이메일을 입력해주세요");
 					return;
 				}
+				
+				if(!isDuplicateCheck){
+					alert("아이디 중복확인을 해주세요.");
+					return;
+				}
+				
 				
 				if(password != confirmPassword){
 					alert("비밀번호를 확인해주세요");

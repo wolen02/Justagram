@@ -6,6 +6,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.wolen.justagram.user.dao.UserDAO">
 	
+	<select id="selectCountByLoginId" parameterType="string" resultType="int">
+		SELECT
+			count(1)
+		FROM
+			`user`
+		WHERE
+			`loginId` = #{loginId}
+	
+	</select>
+
+	
 	<select id="selectUser" parameterType="map"
 	resultType="com.wolen.justagram.user.model.User">
 		SELECT 
@@ -17,6 +28,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			, `updatedAt`
 		FROM
 			`user`
+		WHERE
+			`loginId` = #{loginId}
 	</select>
 	
 	<insert id="insertUser" parameterType="map">
