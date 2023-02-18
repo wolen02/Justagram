@@ -9,8 +9,6 @@ public interface UserDAO {
 	
 	public int selectCountByLoginId(@Param("loginId") String loginId);
 	
-	
-	
 	public int insertUser(
 			@Param("loginId") String loginId
 			, @Param("password") String password
@@ -18,7 +16,6 @@ public interface UserDAO {
 			, @Param("email") String email);
 	
 	public User selectUser(
-			@Param("loginId") String loginId
-			, @Param("password") String password);
+			@Param("loginId") String loginId);
 	
 }

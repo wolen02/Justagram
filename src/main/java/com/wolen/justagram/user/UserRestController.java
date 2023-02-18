@@ -14,6 +14,9 @@ import com.wolen.justagram.common.EncryptUtils;
 import com.wolen.justagram.user.bo.UserBO;
 import com.wolen.justagram.user.model.User;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("/user")
 public class UserRestController {
@@ -36,8 +39,7 @@ public class UserRestController {
 		
 		return map;
 		
-	}
-	
+	}	
 	
 	// 회원가입 api
 	
@@ -67,24 +69,33 @@ public class UserRestController {
 	@PostMapping("/signin")
 	public Map<String, String> signin(
 			@RequestParam("loginId") String loginId
-			, @RequestParam("password") String password){
+			, @RequestParam("password") String password
+			, HttpServletRequest request){
 		
-		User user = userBO.getUser(loginId, password);
+		User user = userBO.getUser(loginId);
 		
 		Map map = new HashMap<>();
 		
 		String encryptPassword = EncryptUtils.md5(password);
 		
-		if(user.getPassword().equals(encryptPassword)) {
-			map.put("result", "success");
-			return map;
-		}else if(user.getLoginId() == null) {
-			map.put("result", null);
-			return map;			
+		if(user != null) {
+			// 아이디는 맞는데 패스워드가 틀린 경우
+			if(!user.getPassword().equals(encryptPassword)) {
+				map.put("result", "passFail");
+			}else {
+				
+				// 아이디와 패스워드 둘다 맞는 경우
+				HttpSession session = request.getSession();
+				session.setAttribute("userId", user.getId());
+				session.setAttribute("userName", user.getName());
+				
+				map.put("result", "success");
+			}
+				
 		}else {
-			map.put("result", "fail");
-			return map;
+			map.put("result", "idFail");
 		}
+		return map;
 		
 	}
 	

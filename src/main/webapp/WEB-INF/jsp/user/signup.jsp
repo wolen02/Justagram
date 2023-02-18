@@ -31,6 +31,8 @@
 								<input type="text" placeholder="아이디" id="inputLoginId" class="form-control">
 								<button type="button" id="duplicationBtn" class="btn btn-primary ml-2">중복확인</button>
 							</div>
+							<div id="idCannotUse" class="text-danger small">해당 아이디는 이미 존재합니다.</div>
+							<div id="idCanUse" class="text-primary small">사용 가능한 아이디입니다.</div>
 							<input type="password" placeholder="비밀번호" id="inputPassword"  class="form-control mt-2">
 							<input type="password" placeholder="비밀번호 확인" id="inputConfirmPassword"  class="form-control mt-2">
 							<input type="text" placeholder="이름" id="inputName"  class="form-control mt-2">
@@ -57,10 +59,14 @@
 	<script>
 		$(document).ready(function(){
 			
+			$("#idCannotUse").hide();
+			$("#idCanUse").hide();
+			
 			//중복확인
 			
 			var isDuplicateCheck = false;
 			
+
 			$("#duplicationBtn").on("click", function(){
 				let id = $("#inputLoginId").val();
 				
@@ -76,9 +82,11 @@
 					,success:function(data){
 						
 						if(data.isDuplicate){
-							alert("다른아이디를 사용해주세요.");
+							$("#idCannotUse").show();
+							$("#idCanUse").hide();
 						}else{
-							alert("사용가능합니다.");
+							$("#idCannotUse").hide();
+							$("#idCanUse").show();
 							isDuplicateCheck = true;
 						}						
 					}
@@ -90,9 +98,13 @@
 				
 			});
 			
+			// 입력란 값을 변경 했을 때 중복확인 승인 해제
 			
-			
-			
+			$("#inputLoginId").keydown(function(){
+				$("#idCannotUse").hide();
+				$("#idCanUse").hide();
+				isDuplicateCheck = false;
+			});
 			
 			
 			

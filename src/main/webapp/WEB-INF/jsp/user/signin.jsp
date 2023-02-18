@@ -29,11 +29,11 @@
 					</div>
 				
 					<div class="d-flex justify-content-center">
-						<div>
+						<form id="loginForm">
 							<input type="text" id="inputId" placeholder="아이디" class="form-control mt-2">
 							<input type="password" id="inputPass" placeholder="비밀번호" class="form-control mt-2">
-							<button type="button" id="loginBtn" class="btn btn-primary btn-block my-4">로그인</button>
-						</div>
+							<button type="submit" id="loginBtn" class="btn btn-primary btn-block my-4">로그인</button>
+						</form>
 					</div>
 				
 				
@@ -70,7 +70,12 @@
 	<script>
 		$(document).ready(function(){
 			
-			$("#loginBtn").on("click", function(){
+			$("#loginForm").on("submit", function(e){
+			//$("#loginBtn").on("click", function(){
+				
+				// 해당 이벤트의 기능을 모두 취소한다.
+				e.preventDefault();
+				
 				let id = $("#inputId").val();
 				let password = $("#inputPass").val();
 				
@@ -91,10 +96,12 @@
 					,success:function(data){
 						if(data.result == "success"){
 							location.href="/post/timeline/view";
-						}else if(data.result == null){
+						}else if(data.result == "idFail"){
 							alert("아이디를 확인해주세요.");
+							return;
 						}else{
 							alert("비밀번호를 확인해주세요.");
+							return;
 						}
 						
 						

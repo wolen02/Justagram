@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+#wrap{
+	width:1200px;
+	margin:auto;
+}
+
+
+.input_box{
+	width:700px;
+}
+
+.post{
+	width:400px;
+}
+
+.photo{
+	width:300px;
+	height:300px;
+}
+
+.comment{
+	width:300px;
+	height:100px;
+}
