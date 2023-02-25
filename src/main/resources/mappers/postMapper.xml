@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.wolen.justagram.post.dao.PostDAO">
 
+
 	<insert id="insertPost" parameterType="map">
 		INSERT INTO
 			`post`
@@ -23,12 +24,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			#{userId}
 			, #{title}
 			, #{content}
-			, 'd'
+			, #{imagePath}
 			, now()
 			, now()
 		)
 	
 	</insert>
+	
+	<select id="selectPostList" parameterType="map"
+	 resultType="com.wolen.justagram.post.model.Post">
+		SELECT
+			`id`
+			, `userId`
+			, `title`
+			, `content`
+			, `imagePath`
+			, `createdAt`
+			, `updatedAt`
+		FROM
+			`post`
+		ORDER BY `createdAt` DESC
+	
+	</select>
 
 
 </mapper>

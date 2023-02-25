@@ -49,6 +49,11 @@ public class UserBO {
 		return userDAO.selectUser(loginId);
 	}
 	
+	// 아이디 기반 유저선택
+	public User getUserById(int userId) {
+		return userDAO.selectUserById(userId);
+	}
+	
 
 	
 }

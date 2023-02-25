@@ -1,4 +1,4 @@
-package com.wolen.justagram.post;
+package com.wolen.justagram.post.comment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,34 +8,29 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.wolen.justagram.post.bo.PostBO;
+import com.wolen.justagram.post.comment.bo.CommentBO;
 
 import jakarta.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/post")
-public class PostRestController {
+@RequestMapping("/post/comment")
+public class CommentRestController {
 	
 	@Autowired
-	private PostBO postBO;
-	
+	private CommentBO commentBO;
+
 	@PostMapping("/create")
-	public Map<String, String> postCreate(
-							@RequestParam("title") String title
-							, @RequestParam("content") String content
-							, @RequestParam("file") MultipartFile file
-							, HttpSession session) {
-				
-		
-		Map<String, String> map = new HashMap<>();
-		
-		//  로그인된 사용자의 user 테이블 id 컬럼 값
+	public Map<String, String> createComment(
+			@RequestParam("postId") int postId
+			,@RequestParam("content") String content
+			, HttpSession session) {
 		
 		int userId = (Integer)session.getAttribute("userId");
 		
-		int count = postBO.addPost(userId, title, content, file);
+		int count = commentBO.addComment(userId, postId, content);
+		
+		Map<String, String> map = new HashMap<>();
 		
 		if(count == 1) {
 			map.put("result", "success");
@@ -44,6 +39,8 @@ public class PostRestController {
 		}
 		
 		return map;
+		
+		
 		
 	}
 	

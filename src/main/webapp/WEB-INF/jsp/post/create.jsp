@@ -11,12 +11,16 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 <link rel="stylesheet" href="/static/css/style3.css" type="text/css">
 </head>
 <body>
 
 	<div id="wrap">
-		<c:import url="/WEB-INF/jsp/inlcude/header" />
+	
+	
+		<!--  여기에 오타가 생긴다고 왜 session객체에서 userId가 0으로 불러와지는거지..? -->
+		<c:import url="/WEB-INF/jsp/include/header.jsp" />
 		
 		
 		<section class="d-flex justify-content-center">
@@ -31,10 +35,10 @@
 					<textarea rows="10" id="inputContent" class="form-control"></textarea>
 				</div>
 				<div>
-					<input type="file">
+					<input class="mt-3" type="file" id="fileInput">
 				</div>
 				<div class="d-flex justify-content-between mt-2">
-					<button type="button" class="btn btn-info">타임라인으로</button>
+					<button type="button" class="btn btn-info" id="timelineBtn">타임라인으로</button>
 					<button type="button" id="uploadBtn" class="btn btn-primary">업로드</button>
 				</div>
 			</div>
@@ -50,6 +54,15 @@
 		<script>
 			$(document).ready(function(){
 				
+				
+				// 타임라인으로 버튼 클릭시
+				$("#timelineBtn").on("click", function(){
+					location.href="/post/timeline/view";
+				});
+				
+				
+				
+				//업로드 버튼 클릭시
 				$("#uploadBtn").on("click", function(){
 						
 					let title = $("#inputTitle").val();
@@ -65,10 +78,21 @@
 						return;
 					}
 					
+					var formData = new FormData();
+					
+					formData.append("title", title);
+					formData.append("content", content);
+					formData.append("file", $("#fileInput")[0].files[0]);
+					
+					
+					
 					$.ajax({
 						type:"post"
 						, url:"/post/create"
-						, data:{"title":title, "content":content}
+						, data:formData
+						, enctype:"multipart/form-data"
+						, processData:false
+						, contentType:false
 						,success:function(data){
 							if(data.result == "success"){
 								location.href="/post/timeline/view";
@@ -81,7 +105,7 @@
 						alert("업로드 오류");
 						return;	
 						}
-					})
+					});
 					
 				})
 							

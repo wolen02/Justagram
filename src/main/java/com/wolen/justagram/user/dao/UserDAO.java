@@ -18,4 +18,7 @@ public interface UserDAO {
 	public User selectUser(
 			@Param("loginId") String loginId);
 	
+	
+	public User selectUserById(@Param("userId") int userId);
+	
 }

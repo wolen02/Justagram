@@ -16,10 +16,9 @@
 <body>
 
 	<div id="wrap">
+
 		
-		<c:import url="/WEB-INF/jsp/include/header.jsp" />
-		
-		<section class="d-flex justify-content-center">
+		<section class="d-flex justify-content-center my-5">
 			
 			<div>
 				<div class="border border-dark rounded shadow-lg">
