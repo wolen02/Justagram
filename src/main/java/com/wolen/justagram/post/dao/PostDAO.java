@@ -18,4 +18,9 @@ public interface PostDAO {
 			,@Param("content") String content
 			, @Param("imagePath") String imagePath );
 	
+	public Post selectPost(@Param("postId") int postId);
+	
+	public int deletePost(@Param("postId") int postId
+			, @Param("userId") int userId);
+	
 }

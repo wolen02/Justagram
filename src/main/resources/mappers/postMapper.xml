@@ -46,6 +46,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ORDER BY `createdAt` DESC
 	
 	</select>
+	
+	<select id="selectPost" parameterType="int"
+	resultType="com.wolen.justagram.post.model.Post">
+				SELECT
+			`id`
+			, `userId`
+			, `title`
+			, `content`
+			, `imagePath`
+			, `createdAt`
+			, `updatedAt`
+		FROM
+			`post`
+		WHERE
+			`id` = #{postId}
+	</select>
+	
+	<delete id="deletePost" parameterType="int">
+		DELETE FROM
+			`post`
+		WHERE
+			`id` = #{postId}
+			AND `userId` = #{userId}
+	</delete>
 
 
 </mapper>

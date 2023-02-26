@@ -51,5 +51,46 @@ public class FileManagerService {
 		
 	}
 	
+	// 파일 삭제 메소드
+		public static boolean removeFile(String filePath) {
+			// 삭제 경로 /images 를 제거하고
+			// 실제 파일 저장 경로에 이어 붙여 준다.
+			// C:\\Users\\wnwlt\\Desktop\\justagram\\upload\\images/2_3143135\\adfa.png
+			
+			String realFilePath = FILE_UPLOAD_PATH + filePath.replace("/images", "");
+			// 문자열의 경로를 path라는 객체로 만들어주는 과정
+			Path path = Paths.get(realFilePath);
+			
+			// 파일이 존재하는지
+			if(Files.exists(path)) {
+				try {
+					Files.delete(path);
+				} catch (IOException e) {
+
+					e.printStackTrace();
+					
+					return false;
+				}
+			}
+			
+			// C:\\Users\\wnwlt\\Desktop\\justagram\\upload\\images/2_3143135
+			// 디렉토리 경로
+			Path dirPath = path.getParent();
+			// 디렉토리존재 여부
+			if(Files.exists(dirPath)) {
+				try {
+					Files.delete(dirPath);
+				} catch (IOException e) {
+
+					e.printStackTrace();
+					
+					return false;
+				}
+			}
+			
+			return false;
+			
+		}
+	
 	
 }

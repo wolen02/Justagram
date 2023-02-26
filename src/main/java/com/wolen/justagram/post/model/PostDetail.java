@@ -1,6 +1,10 @@
 package com.wolen.justagram.post.model;
 
 import java.util.Date;
+import java.util.List;
+
+import com.wolen.justagram.post.comment.model.Comment;
+import com.wolen.justagram.post.comment.model.CommentDetail;
 
 /**
  * @author wnwlt
@@ -16,6 +20,7 @@ public class PostDetail {
 	private Date createdAt;
 	private int likeCount;
 	private boolean isLike;
+	private List<CommentDetail> commentList;
 
 	public int getId() {
 		return id;
@@ -64,6 +69,12 @@ public class PostDetail {
 	}
 	public void setLike(boolean isLike) {
 		this.isLike = isLike;
+	}
+	public List<CommentDetail> getCommentList() {
+		return commentList;
+	}
+	public void setCommentList(List<CommentDetail> commentList) {
+		this.commentList = commentList;
 	}
 	
 	

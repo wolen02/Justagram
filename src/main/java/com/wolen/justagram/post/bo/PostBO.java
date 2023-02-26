@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.wolen.justagram.common.FileManagerService;
+import com.wolen.justagram.post.comment.bo.CommentBO;
+import com.wolen.justagram.post.comment.model.CommentDetail;
 import com.wolen.justagram.post.dao.PostDAO;
 import com.wolen.justagram.post.like.bo.LikeBO;
 import com.wolen.justagram.post.model.Post;
@@ -28,6 +30,9 @@ public class PostBO {
 	@Autowired
 	private LikeBO likeBO;
 	
+	@Autowired
+	private CommentBO commentBO;
+	
 	public List<PostDetail> getPostList(int userId){
 		
 		List<Post> postList = postDAO.selectPostList();
@@ -46,6 +51,7 @@ public class PostBO {
 			boolean isLike = likeBO.isLike(post.getId(), userId);
 			postDetail.setLike(isLike);
 			
+			List<CommentDetail> commentList = commentBO.getCommentList(post.getId());
 			
 			postDetail.setId(post.getId());
 			postDetail.setUserId(post.getUserId());
@@ -54,6 +60,7 @@ public class PostBO {
 			postDetail.setCreatedAt(post.getCreatedAt());
 			postDetail.setUserName(user.getName());
 			postDetail.setLikeCount(likeCount);
+			postDetail.setCommentList(commentList);
 			
 			postDetailList.add(postDetail);
 		}
@@ -67,6 +74,31 @@ public class PostBO {
 		
 		
 		return postDAO.insertPost(userId, title, content, imagePath);
+		
+	}
+	
+	public int deletePost(int postId, int userId) {
+		
+		
+		Post post = postDAO.selectPost(postId);
+		
+		int count = postDAO.deletePost(postId, userId);
+		
+		if(count == 1) {
+			
+			FileManagerService.removeFile(post.getImagePath());
+			
+			// post 와 관계된 댓글 삭제
+			commentBO.deleteCommentByPostId(postId);
+			
+			//좋아요 삭제
+			likeBO.deleteLike(postId);
+		}
+		
+
+		
+		// 대상 post 삭제
+		return count;
 		
 	}
 	

@@ -25,6 +25,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			, now()
 		)
 	</insert>
+	<select id="selectCommentList" parameterType="int"
+	 resultType="com.wolen.justagram.post.comment.model.Comment">
+		SELECT
+			`id`
+			,`userId`
+			, `postId`
+			, `content`
+			, `createdAt`
+			, `updatedAt`
+		FROM
+			`comment`
+		WHERE
+			`postId` = #{postId}
+		ORDER BY
+			`id` DESC
+	
+	</select>
+	
+	<delete id="deleteCommentByPostId" parameterType="int">
+		DELETE FROM
+			`comment`
+		WHERE
+			`postId` = #{postId}
+	</delete>
 
 
 </mapper>
